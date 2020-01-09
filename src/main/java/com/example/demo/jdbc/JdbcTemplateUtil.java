@@ -37,24 +37,25 @@ public class JdbcTemplateUtil {
 
     public static void creatOracle() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.url("jdbc:oracle:thin:@192.168.1.17:1521:orcl?characterEncoding=ISO8859-1");
+        dataSourceBuilder.url("jdbc:oracle:thin:@192.168.1.17:1521:orcl");
         dataSourceBuilder.username("system");
         dataSourceBuilder.password("china2012");
-        dataSourceBuilder.driverClassName("com.springcloud.oracle.CustomDriver");
+        dataSourceBuilder.driverClassName("oracle.jdbc.OracleDriver");
         DataSource dataSource = dataSourceBuilder.build();
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         String sql = "select * from users where db_user like '%X'";
-        List<Users> usersList = jdbcTemplate.query(sql, new UsersMapper());
-        System.out.println(usersList);
+        jdbcTemplate.execute(sql);
+//        List<Users> usersList = jdbcTemplate.query(sql, new UsersMapper());
+//        System.out.println(usersList);
     }
 
 
     public static void main(String[] args) {
-        JdbcTemplateUtil jdbcTemplateUtil = new JdbcTemplateUtil();
-        DataSource dataSource = jdbcTemplateUtil.creatMysqlDataSource();
-        add(dataSource);
+//        JdbcTemplateUtil jdbcTemplateUtil = new JdbcTemplateUtil();
+//        DataSource dataSource = jdbcTemplateUtil.creatMysqlDataSource();
+//        add(dataSource);
 
-//        creatOracle();
+        creatOracle();
     }
 }

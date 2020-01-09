@@ -2,11 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.properties.Kettle;
 import com.example.demo.utils.KettleUtil;
-import com.sun.xml.internal.ws.resources.HttpserverMessages;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -23,11 +21,11 @@ public class Quartz implements Job {
     Kettle kettle;
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void execute(JobExecutionContext jobExecutionContext) {
         JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
         String transName = jobDataMap.getString("transName");
-        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-        KettleUtil.runResource(transName,kettle,request);
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        KettleUtil.runResource(transName, kettle);
 
         System.out.println("test quartz excute....");
     }

@@ -1,12 +1,6 @@
-package com.shufeng.dg.dispatch.rowmapper;
+package com.example.demo.rowmapper;
 
-import com.shufeng.dg.dispatch.Annotation.ClobAnna;
-import com.shufeng.dg.dispatch.Annotation.OnlyDate;
-import com.shufeng.dg.dispatch.enums.DatabaseType;
-import com.shufeng.dg.dispatch.utils.ClobUtil;
-import com.shufeng.dg.dispatch.utils.ThreadLoaclUtil;
-import com.shufeng.dg.dispatch.utils.Tool;
-import com.springcloud.framework.utils.DateUtil;
+import com.example.demo.utils.Tool;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.io.IOException;
@@ -14,7 +8,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -64,12 +61,13 @@ public class BaseRowMapper<T> implements RowMapper<T> {
                 Class fieldClazz = fieldMap.get(fieldName).getType();
                 Field field = fieldMap.get(fieldName);
                 field.setAccessible(true);
-                if (ThreadLoaclUtil.databaseTypeTheardLocal.get().equals(DatabaseType.mysql.label())) {
-                    mapToMysql(field, fieldClazz, obj, rs, columnName);
-                }
-                if (ThreadLoaclUtil.databaseTypeTheardLocal.get().equals(DatabaseType.oracle.label())) {
-                    mapToOracle(field, fieldClazz, obj, rs, columnName);
-                }
+//                if (ThreadLoaclUtil.databaseTypeTheardLocal.get().equals(DatabaseType.mysql.label())) {
+//                    mapToMysql(field, fieldClazz, obj, rs, columnName);
+//                }
+//                if (ThreadLoaclUtil.databaseTypeTheardLocal.get().equals(DatabaseType.oracle.label())) {
+//                    mapToOracle(field, fieldClazz, obj, rs, columnName);
+//                }
+                mapToMysql(field, fieldClazz, obj, rs, columnName);
                 field.setAccessible(false);
             }
         } catch (Exception e) {
@@ -107,41 +105,6 @@ public class BaseRowMapper<T> implements RowMapper<T> {
         }
     }
 
-
-    private void mapToOracle(Field field, Class fieldClazz, Object obj, ResultSet rs, String columnName) throws SQLException, IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        if (field.isAnnotationPresent(ClobAnna.class)) {
-            field.set(obj, ClobUtil.ClobToString(rs.getClob(columnName)));
-        } else {
-            if (fieldClazz == Integer.class) {
-                field.set(obj, Integer.parseInt(rs.getBigDecimal(columnName) == null ? "0" : rs.getBigDecimal(columnName) + ""));
-            } else if (fieldClazz == Long.class) {
-                field.set(obj, Long.parseLong(rs.getBigDecimal(columnName) == null ? "0" : rs.getBigDecimal(columnName) + ""));
-            } else if (fieldClazz == Double.class) {
-                field.set(obj, Double.parseDouble(rs.getBigDecimal(columnName) == null ? "0" : rs.getBigDecimal(columnName) + ""));
-            } else if (fieldClazz == Float.class) {
-                field.set(obj, Float.parseFloat(rs.getBigDecimal(columnName) == null ? "0" : rs.getBigDecimal(columnName) + ""));
-            } else if (fieldClazz == Date.class) {
-                if (field.isAnnotationPresent(OnlyDate.class)) {
-                    field.set(obj, DateUtil.stringToDate(rs.getString(columnName)));
-                } else {
-                    field.set(obj, DateUtil.stringToDatetime(rs.getString(columnName)));
-                }
-            } else if (fieldClazz == Timestamp.class) {
-                if (field.isAnnotationPresent(OnlyDate.class)) {
-                    field.set(obj, DateUtil.stringToDate(rs.getString(columnName)));
-                } else {
-                    field.set(obj, DateUtil.stringToDatetime(rs.getString(columnName)));
-                }
-            } else if (fieldClazz == Clob.class) {
-                field.set(obj, rs.getClob(columnName).toString());
-            } else if (fieldClazz.isEnum()) {
-                enumField(field, fieldClazz, obj, rs, columnName);
-            } else {
-                field.set(obj, rs.getObject(columnName));
-            }
-
-        }
-    }
 
     private void enumField(Field field, Class fieldClazz, Object obj, ResultSet rs, String columnName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, SQLException {
 

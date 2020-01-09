@@ -53,7 +53,7 @@ public class KettleTest {
      */
     @GetMapping("runResource")
     public String runResource(String transName, HttpServletRequest request) {
-        return KettleUtil.runResource(transName, kettle,request);
+        return KettleUtil.runResource(transName, kettle);
     }
 
     /**

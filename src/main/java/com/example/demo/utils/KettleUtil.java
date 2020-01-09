@@ -45,7 +45,7 @@ public class KettleUtil {
      * @param transName
      * @param kettle
      */
-    public static String runResource(String transName, Kettle kettle, HttpServletRequest request) {
+    public static String runResource(String transName, Kettle kettle) {
         try {
             //创建db资源库
             KettleDatabaseRepository repository = new KettleDatabaseRepository();

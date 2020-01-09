@@ -221,16 +221,16 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-        <repository>
-            <id>fengshun_maven</id>
-            <name>Snapshot</name>
-            <url>http://192.168.1.13/repository/maven-snapshots/</url>
-        </repository>
-        <repository>
-            <id>fengshun_maven</id>
-            <name>Release</name>
-            <url>http://192.168.1.13/repository/maven-releases/</url>
-        </repository>
+        <!--<repository>-->
+            <!--<id>fengshun_maven</id>-->
+            <!--<name>Snapshot</name>-->
+            <!--<url>http://192.168.1.13/repository/maven-snapshots/</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>fengshun_maven</id>-->
+            <!--<name>Release</name>-->
+            <!--<url>http://192.168.1.13/repository/maven-releases/</url>-->
+        <!--</repository>-->
     </repositories>
 
 </project>
